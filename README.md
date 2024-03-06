@@ -22,9 +22,8 @@
 #### Task2 - task2.py - Python script to complete Task2. This script will parse the hs_intervals file and report the mean GC coverage for the each GC_bins ##### Input: /path/to/hs_interval_file
 ##### Command line: ./task2.pt /path/to/hs_interval_file
 
-#### Task3 - task3.py - Python script to complete the Task3. This script will use the given rsID to retrieve information about alleles, locations,
-effects of variants in transcripts, and genes containing the transcript. 
-Both python and perl script that I have made, seem to be having an HTTP error. I dont know if its just my computer or some other issue 
+#### Task3 - task3.py - Python script to complete the Task3. 
+This script will use the given rsID to retrieve information about alleles, locations, effects of variants in transcripts, and genes containing the transcript. Both python and perl script that I have made, seem to be having an HTTP error. I dont know if its just my computer or some other issue 
 
 #### Cloud computing 
 
