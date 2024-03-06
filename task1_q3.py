@@ -8,6 +8,9 @@
 import argparse
 
 def load_gtf_annotations(gtf_file):
+    """
+    This function parses the GTF file, which has the annotataitons for each gene. and stores the CHR, START, END in a dictionry
+    """
     annotations = {}
     with open(gtf_file, 'r') as file:
         for line in file:
@@ -22,6 +25,9 @@ def load_gtf_annotations(gtf_file):
     return annotations
 
 def load_coordinates_to_annotate(coordinates_file):
+    """
+    This function reads in the file that has to be annotated and the stores the coordinates as sets in a list
+    """
     coordinates = []
     with open(coordinates_file, 'r') as file:
          for line in file:
@@ -32,6 +38,11 @@ def load_coordinates_to_annotate(coordinates_file):
     return coordinates
 
 def annotate_coordinates(gtf_annotations, coordinates):
+    """
+    This function takes the parsed GTF annotation, and the positions that need to annotated using the GTF annotations. 
+    It recursively goes through all the positions, and see where it overlaps and the gives out the gene name
+    It returns a set of CHR, START, END and the GENE_NAME
+    """
     annotated_genes = set()
     for chromosome, position in coordinates:
         if chromosome in gtf_annotations:

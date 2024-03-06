@@ -2,6 +2,11 @@
 
 import argparse
 def parse_fasta(file_path):
+    """
+    This function parses the fastq, by checking for the starting of new sequences, and then adds each sequence to a list
+    Input - file 
+    Output - a list of all the sequences
+    """
     sequences = []
     with open(file_path, "r") as file:
         current_sequence = ""
@@ -17,6 +22,9 @@ def parse_fasta(file_path):
     return sequences
 
 def find_most_frequent_sequences(file_path):
+    """
+    The input is the list created in the parse_fasta function, it goes through the list and recursively checks if the sequences is found again and adds the total number of times the same sequence appears, and then chooses the top 10
+    """
     sequences = parse_fasta(file_path)
     sequence_counts = {}
     for sequence in sequences:

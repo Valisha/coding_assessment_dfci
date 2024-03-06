@@ -10,21 +10,28 @@ import argparse
 ## 6. Output the results 
 
 def parse_intervals_file(file_path):
-   gc_coverage_data = {}
-   with open(file_path, 'r') as file:
-        next(file) ## Skipping the header 
-        for line in file:
-            parts = line.strip().split('\t')
-            if parts[5] and parts[6]:
-                gc_percentage = float(parts[5])*100 ## Converting the GC rage from 0-1 to percentage 
-                mean_coverage = float(parts[6])
-                gc_bin = int(gc_percentage // 10) * 10 ## Calculating gc bin 
-                gc_coverage_data.setdefault(gc_bin, []).append(mean_coverage)
-            else:
-                gc_coverage_data.setdefault(gc_bin, []).append(0)
-   return gc_coverage_data
+    """
+    This function parses the input file, and calculated the GC%, and then using the mean_coverage and GC%
+    """
+    gc_coverage_data = {}
+    with open(file_path, 'r') as file:
+         next(file) ## Skipping the header 
+         for line in file:
+             parts = line.strip().split('\t')
+             if parts[5] and parts[6]:
+                 gc_percentage = float(parts[5])*100 ## Converting the GC rage from 0-1 to percentage 
+                 mean_coverage = float(parts[6])
+                 gc_bin = int(gc_percentage // 10) * 10 ## Calculating gc bin 
+                 gc_coverage_data.setdefault(gc_bin, []).append(mean_coverage)
+             else:
+                 gc_coverage_data.setdefault(gc_bin, []).append(0)
+    print(gc_coverage_data)
+    return gc_coverage_data
 
 def calculate_mean_coverage(gc_coverage_data):
+    """
+    This function calculates the mean_coverage for each bin
+    """
     mean_coverage_by_bin = {}
     for gc_bin, coverages in gc_coverage_data.items():
         mean_coverage = sum(coverages) / len(coverages)

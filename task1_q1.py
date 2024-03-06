@@ -4,9 +4,16 @@ import os
 import argparse
 
 def count_nucleotides(line):
+    """
+    This function is to make sure that we only count the A, T, G and Cs in the string.
+    Input is the parsed line, defined inside the count_long_sequences function
+    """
     return sum(1 for nucleotide in line if nucleotide in ['A', 'T', 'G', 'C'])
 
 def count_long_sequences(file_path):
+    """
+    This function takes each line as an input, and checks if its the starting of a new line, then calculates the length of the sequences. By using the count_nucleotides function
+    """
     long_sequences = 0
     total_sequences = 0
     with open(file_path, "r") as file:
@@ -26,6 +33,9 @@ def count_long_sequences(file_path):
         return (long_sequences / total_sequences) * 100
 
 def find_fastq_files(directory):
+    """
+    This function for finding all the possible fastqs in the directory, containing multiple sub directories
+    """
     fastq_files = []
     for root, dirs, files in os.walk(directory):
         for file in files:
