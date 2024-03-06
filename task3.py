@@ -2,37 +2,48 @@
 
 import requests
 
-# Function to fetch variant information from Ensembl API
-def fetch_variant_info(variant_id):
-    url = f"https://rest.ensembl.org/variation/human/{variant_id}"
-    response = requests.get(url)
-    try:
-        response.raise_for_status()  # Check for HTTP errors
-        variant_info = response.json()  # Parse JSON response
-        return variant_info
-    except requests.exceptions.HTTPError as err:
-        print(f"HTTP Error: {err}")
-    except requests.exceptions.RequestException as err:
-        print(f"Request Exception: {err}")
-    return None
+url = 'https://rest.ensembl.org/variation/homo_sapiens'
+headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
+data = {"ids": ["rs56116432", "COSM476"]}
 
-# Example variant ID
-variant_id = "rs56116432"
+response = requests.post(url, json=data, headers=headers)
 
-# Fetch variant information
-variant_info = fetch_variant_info(variant_id)
+if response.status_code == 200:
+    print("Request successful!")
+    print("Response:")
+    data = response.json()
+else:
+    print("Error:", response.status_code)
+    print("Response:")
+    print(response.text)
 
-if variant_info:
-    # Parse the JSON response to extract required information
-    alleles = variant_info.get('alleles')
-    location = variant_info.get('mappings')[0].get('location')
-    effects = variant_info.get('evidence')['consequence_types']
-    genes = variant_info.get('transcript_consequences')
+variant_info = []
 
-    print("Alleles:", alleles)
-    print("Location:", location)
-    print("Effects:", effects)
-    print("Genes containing the transcripts:")
-    for gene in genes:
-        print("- Gene:", gene.get('gene_id'), "Transcript:", gene.get('transcript_id'))
+for variant_id, info in data.items():
+    mappings = [{'Location': mapping.get('location', None),
+                 'Allele String': mapping.get('allele_string', None),
+                 'Ancestral Allele': mapping.get('ancestral_allele', None)} 
+                for mapping in info.get('mappings', [])]
+    
+    variant = {
+        'ID': variant_id,
+        'Variant Class': info.get('var_class', None),
+        'Most Severe Consequence': info.get('most_severe_consequence', None),
+        'Minor Allele': info.get('minor_allele', None),
+        'Mappings': mappings
+    }
+    
+    variant_info.append(variant)
 
+for variant in variant_info:
+    print(f"ID: {variant['ID']}")
+    print(f"Variant Class: {variant['Variant Class']}")
+    print(f"Most Severe Consequence: {variant['Most Severe Consequence']}")
+    print(f"Minor Allele: {variant['Minor Allele']}")
+    print("Mappings:")
+    for mapping in variant['Mappings']:
+        print(f"\tLocation: {mapping['Location']}")
+        print(f"\tAllele String: {mapping['Allele String']}")
+        print(f"\tAncestral Allele: {mapping['Ancestral Allele']}")
+        print()
+    print()

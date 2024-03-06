@@ -59,3 +59,4 @@ FROM Invoices
 GROUP BY UserId
 HAVING COUNT(OrderId) >= 1;
 
+This query works by grouping the results by userId and then filtering out any users who have only one session using the HAVING clause, which checks that the count of sessions per user is greater than one. The AVG(duration) function calculates the average session duration for each of these users
